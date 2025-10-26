@@ -1,0 +1,101 @@
+:root {
+  --color-rose: #f7cac9; /* Rose quartz */
+  --color-rose-100: #fde9e7;
+  --color-rose-200: #f8b5b8;
+  --color-rose-dark: #f5b8b6;
+  --color-text: #1a1a1a; /* near black */
+  --color-text-muted: #4a4a4a;
+  --color-border: #e9e9e9;
+  --container-max: 1200px;
+  --shadow-rose: 0 4px 20px rgba(247, 202, 201, 0.3);
+  --shadow-rose-lg: 0 8px 30px rgba(247, 202, 201, 0.4);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Roboto Flex", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  color: var(--color-text);
+  background: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root { display: grid; min-height: 100%; grid-template-rows: auto 1fr auto; }
+
+h1, h2, h3, h4 {
+  font-family: "Bodoni Moda", serif;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.2;
+}
+
+p {
+  margin: 0 0 1rem 0;
+  color: var(--color-text-muted);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Container full-width para secciones que usan todo el ancho */
+.container-fluid {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Container con padding solo para contenido interno */
+.container-content {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 20px;
+  border-radius: 999px;
+  border: 1px solid var(--color-text);
+  color: #fff;
+  background: var(--color-text);
+  transition: transform 200ms ease, opacity 200ms ease;
+}
+.btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.9;
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--color-text);
+}
+
+.section {
+  padding: 56px 0;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 1px, 1px);
+  border: 0;
+}

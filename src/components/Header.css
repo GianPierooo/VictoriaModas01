@@ -1,0 +1,743 @@
+/* ========================================
+   HEADER PROFESIONAL VICTORIAMODAS
+   Estilo elegante y moderno
+   ======================================== */
+
+.header {
+  position: fixed;
+  top: 34px;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: linear-gradient(135deg, 
+    rgba(247, 202, 201, 0.15) 0%, 
+    rgba(248, 181, 184, 0.15) 100%
+  );
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(247, 202, 201, 0.2);
+  transition: all 0.3s ease;
+  overflow: visible !important; /* Permitir que elementos salgan */
+  height: 80px; /* Altura fija - NO crece */
+}
+
+.header.is-scrolled {
+  background: linear-gradient(135deg, 
+    rgba(247, 202, 201, 0.25) 0%, 
+    rgba(248, 181, 184, 0.25) 100%
+  );
+  backdrop-filter: blur(12px);
+  border-bottom-color: rgba(247, 202, 201, 0.4);
+  box-shadow: 0 4px 20px rgba(247, 202, 201, 0.2);
+}
+
+/* Header transparente solo en la página de inicio */
+.header.home-header {
+  background: transparent;
+  backdrop-filter: none;
+  border-bottom: 1px solid transparent;
+}
+
+.header.home-header.is-scrolled {
+  background: linear-gradient(135deg, 
+    rgba(247, 202, 201, 0.25) 0%, 
+    rgba(248, 181, 184, 0.25) 100%
+  );
+  backdrop-filter: blur(12px);
+  border-bottom-color: rgba(247, 202, 201, 0.4);
+  box-shadow: 0 4px 20px rgba(247, 202, 201, 0.2);
+}
+
+/* Estilos para header con fondo rosa (páginas normales) */
+.header .brand {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.header .nav a {
+  color: var(--color-text);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.header .nav a:hover {
+  color: var(--color-rose-dark);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.header .dropdown-trigger {
+  color: var(--color-text);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.header .dropdown-trigger:hover {
+  color: var(--color-rose-dark);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.header .action-btn {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(247, 202, 201, 0.4);
+  color: var(--color-text);
+}
+
+.header .action-btn:hover {
+  background: var(--color-rose);
+  color: white;
+  border-color: var(--color-rose);
+}
+
+/* Estilos específicos para header transparente (página de inicio) */
+.header.home-header .brand {
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.header.home-header .nav a {
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.header.home-header .nav a:hover {
+  color: var(--color-rose);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.header.home-header .dropdown-trigger {
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.header.home-header .dropdown-trigger:hover {
+  color: var(--color-rose);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.header.home-header .action-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+.header.home-header .action-btn:hover {
+  background: var(--color-rose);
+  color: white;
+  border-color: var(--color-rose);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px; /* Altura fija */
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+  position: relative;
+  overflow: visible !important; /* Permitir que el dropdown salga */
+}
+
+/* Ya no necesitamos esto porque quitamos la clase container */
+
+/* ============= BRAND ============= */
+.brand {
+  font-family: "Bodoni Moda", serif;
+  font-weight: 700;
+  font-size: 32px;
+  letter-spacing: -0.5px;
+  text-decoration: none;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: linear-gradient(90deg, 
+    #2c2c2c 0%,     /* Charcoal oscuro para V */
+    #8b7355 25%,    /* Marrón cálido para ictoria */
+    #d4af8c 50%,    /* Beige dorado para Modas */
+    #f7cac9 100%    /* Rosa suave para odas */
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Línea decorativa superior */
+.brand::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 0;
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(90deg, #f7cac9, #d4af8c);
+  border-radius: 2px;
+}
+
+/* Icono de estrella principal */
+.brand .sparkle-main {
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, #ffa726 0%, #f7cac9 100%);
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 12px rgba(255, 167, 38, 0.4);
+  flex-shrink: 0;
+}
+
+.brand .sparkle-main::before {
+  content: '✨';
+  font-size: 18px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+/* Estrellas decorativas pequeñas */
+.brand .sparkle-small-1,
+.brand .sparkle-small-2 {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: linear-gradient(135deg, #ffa726 0%, #f7cac9 100%);
+  border-radius: 50%;
+  opacity: 0.8;
+  box-shadow: 0 2px 6px rgba(255, 167, 38, 0.3);
+}
+
+.brand .sparkle-small-1 {
+  top: -10px;
+  left: -10px;
+}
+
+.brand .sparkle-small-2 {
+  bottom: -8px;
+  left: -8px;
+}
+
+.brand .sparkle-small-1::before,
+.brand .sparkle-small-2::before {
+  content: '✨';
+  font-size: 10px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2));
+}
+
+/* Efectos de hover para el logo */
+.brand:hover {
+  transform: scale(1.02);
+  transition: transform 0.3s ease;
+}
+
+.brand:hover .sparkle-main {
+  transform: rotate(15deg) scale(1.1);
+  transition: transform 0.3s ease;
+}
+
+.brand:hover .sparkle-small-1 {
+  transform: rotate(-15deg) scale(1.2);
+  transition: transform 0.3s ease;
+}
+
+.brand:hover .sparkle-small-2 {
+  transform: rotate(15deg) scale(1.2);
+  transition: transform 0.3s ease;
+}
+
+/* Animación sutil de las estrellas */
+@keyframes sparkle-glow {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+.brand .sparkle-main,
+.brand .sparkle-small-1,
+.brand .sparkle-small-2 {
+  animation: sparkle-glow 3s ease-in-out infinite;
+}
+
+.brand .sparkle-small-1 {
+  animation-delay: 0.5s;
+}
+
+.brand .sparkle-small-2 {
+  animation-delay: 1s;
+}
+
+/* ============= NAVIGATION ============= */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  position: relative;
+  overflow: visible !important;
+  z-index: 1; /* Asegurar que esté por encima del header-inner */
+}
+
+.nav a {
+  color: var(--color-text);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: "Roboto Flex", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 12px 0;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-rose), var(--color-rose-dark));
+  transition: width 0.3s ease;
+  border-radius: 2px;
+}
+
+.nav a:hover {
+  color: var(--color-rose);
+}
+
+.nav a:hover::after {
+  width: 100%;
+}
+
+/* ============= DROPDOWN MENU ============= */
+/* El dropdown ahora es externo e independiente del header */
+
+.dropdown-trigger {
+  background: none;
+  border: none;
+  color: var(--color-text);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: "Roboto Flex", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 12px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.dropdown-trigger::after {
+  content: '';
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-rose), var(--color-rose-dark));
+  transition: width 0.3s ease;
+  border-radius: 2px;
+}
+
+.dropdown-trigger:hover {
+  color: var(--color-rose);
+}
+
+.dropdown-trigger:hover::after {
+  width: 100%;
+}
+
+.dropdown-arrow {
+  font-size: 10px;
+  transition: transform 0.3s ease;
+}
+
+.dropdown-container:hover .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+/* Dropdown EXTERNO - Posicionado dinámicamente con JavaScript */
+.dropdown-menu-external {
+  position: fixed;
+  /* top y left se calculan dinámicamente con JavaScript */
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(247, 202, 201, 0.3);
+  padding: 12px 0;
+  min-width: 220px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  pointer-events: none;
+  z-index: 10001; /* Por encima de TODO */
+}
+
+/* Flecha hacia arriba del dropdown externo */
+.dropdown-menu-external::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 20px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid white;
+  filter: drop-shadow(0 -2px 2px rgba(0, 0, 0, 0.1));
+}
+
+.dropdown-menu-external.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0); /* Sin desplazamiento cuando está abierto */
+  pointer-events: auto;
+}
+
+.dropdown-menu-external a {
+  display: block;
+  padding: 14px 24px;
+  color: var(--color-text);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  font-family: "Roboto Flex", sans-serif;
+  text-transform: none;
+  letter-spacing: 0.2px;
+  transition: all 0.3s ease;
+  position: relative;
+  white-space: nowrap;
+}
+
+.dropdown-menu-external a + a {
+  border-top: 1px solid rgba(247, 202, 201, 0.15);
+}
+
+.dropdown-menu-external a::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 100%;
+  background: var(--color-rose);
+  transition: width 0.3s ease;
+  border-radius: 0;
+}
+
+.dropdown-menu-external a:hover::before {
+  width: 3px;
+}
+
+.dropdown-menu-external a:hover {
+  background: linear-gradient(90deg, 
+    rgba(247, 202, 201, 0.15) 0%, 
+    rgba(248, 181, 184, 0.1) 100%
+  );
+  color: var(--color-rose-dark);
+}
+
+.dropdown-menu a {
+  display: block !important;
+  padding: 14px 24px !important;
+  color: var(--color-text) !important;
+  text-decoration: none !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  font-family: "Roboto Flex", sans-serif !important;
+  text-transform: none !important;
+  letter-spacing: 0.2px !important;
+  transition: all 0.3s ease;
+  position: relative !important;
+  white-space: nowrap !important;
+  opacity: 1 !important; /* FORZAR visibilidad */
+  visibility: visible !important; /* FORZAR visibilidad */
+  height: auto !important; /* FORZAR altura automática */
+  overflow: visible !important; /* FORZAR overflow visible */
+}
+
+.dropdown-menu a::after {
+  display: none;
+}
+
+.dropdown-menu a:hover {
+  background: linear-gradient(90deg, 
+    rgba(247, 202, 201, 0.15) 0%, 
+    rgba(248, 181, 184, 0.1) 100%
+  );
+  color: var(--color-rose-dark);
+  padding-left: 32px;
+  border-left: 3px solid var(--color-rose);
+}
+
+.dropdown-menu a + a {
+  border-top: 1px solid rgba(247, 202, 201, 0.15);
+}
+
+.dropdown-menu a::before {
+  content: '';
+  position: absolute;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 2px;
+  background: var(--color-rose);
+  transition: width 0.3s ease;
+  border-radius: 2px;
+}
+
+.dropdown-menu a:hover::before {
+  width: 6px;
+}
+
+/* ============= HEADER ACTIONS ============= */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Botón hamburger - oculto por defecto (solo mobile) */
+.hamburger-btn {
+  display: none !important; /* Oculto en desktop */
+}
+
+/* Ocultar en tablet también */
+@media (min-width: 641px) {
+  .hamburger-btn {
+    display: none !important;
+  }
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: rgba(247, 202, 201, 0.1);
+  border: 1px solid rgba(247, 202, 201, 0.3);
+  border-radius: 50%;
+  color: var(--color-text);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.action-btn:hover {
+  background: var(--color-rose);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(247, 202, 201, 0.4);
+  border-color: var(--color-rose);
+}
+
+.action-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.action-btn:hover svg {
+  transform: scale(1.1);
+}
+
+.cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: linear-gradient(135deg, var(--color-rose) 0%, var(--color-rose-dark) 100%);
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  min-width: 20px;
+  box-shadow: 0 2px 8px rgba(247, 202, 201, 0.5);
+  border: 2px solid white;
+}
+
+.action-btn:hover .cart-badge {
+  background: white;
+  color: var(--color-rose);
+  transform: scale(1.1);
+}
+
+/* ============= RESPONSIVE DESIGN ============= */
+@media (max-width: 1200px) {
+  .header-inner {
+    padding: 0 30px;
+  }
+  
+  .nav {
+    gap: 30px;
+  }
+  
+  .header-actions {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .header-inner {
+    padding: 0 24px;
+  }
+  
+  .nav {
+    gap: 24px;
+  }
+  
+  .nav a {
+    font-size: 13px;
+  }
+  
+  .dropdown-trigger {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    top: 28px;
+  }
+  
+  .header-inner {
+    height: 70px;
+    padding: 0 20px;
+  }
+  
+  .brand {
+    font-size: 28px;
+  }
+  
+  .nav {
+    gap: 20px;
+  }
+  
+  .nav a {
+    font-size: 12px;
+    padding: 10px 0;
+  }
+  
+  .dropdown-trigger {
+    font-size: 12px;
+    padding: 10px 0;
+  }
+  
+  .action-btn {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .header-actions {
+    gap: 12px;
+  }
+  
+  /* Asegurar que hamburger NO se vea en tablet */
+  .hamburger-btn {
+    display: none !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .header-inner {
+    height: 65px;
+    padding: 0 16px;
+  }
+  
+  .brand {
+    font-size: 24px;
+    padding: 8px; /* Touch target expansion */
+    margin: -8px; /* Mantener visual sin cambios */
+  }
+  
+  .nav {
+    display: none; /* Se reemplazará con menú hamburger */
+  }
+
+  /* Ocultar dropdown externo en mobile (se usa el MobileMenu) */
+  .dropdown-menu-external {
+    display: none !important;
+  }
+  
+  .header-actions {
+    gap: 10px;
+  }
+  
+  /* IMPORTANTE: Touch targets mínimos 44x44px */
+  .action-btn {
+    width: 44px !important; /* Mantener tamaño mínimo */
+    height: 44px !important;
+    font-size: 18px; /* Ícono más visible */
+  }
+  
+  /* Botón hamburger - SOLO visible en mobile pequeño */
+  .hamburger-btn {
+    display: flex !important;
+    order: -1; /* Mostrar primero en el header actions */
+  }
+  
+  /* Ocultar botón de usuario en mobile pequeño para ahorrar espacio */
+  .user-btn {
+    display: none !important;
+  }
+  
+  .cart-badge {
+    width: 20px;
+    height: 20px;
+    font-size: 11px;
+    top: -4px;
+    right: -4px;
+  }
+  
+  /* Dropdown menus más touch-friendly */
+  .dropdown-menu {
+    min-width: 250px; /* Más ancho en mobile */
+    left: auto;
+    right: 0; /* Alinear a la derecha para evitar cortes */
+  }
+  
+  .dropdown-menu::before {
+    left: auto;
+    right: 20px; /* Flecha alineada a la derecha */
+  }
+  
+  .dropdown-menu a {
+    padding: 16px 24px; /* Aumentar área tocable */
+    font-size: 16px; /* Evitar zoom en iOS */
+  }
+  
+  /* Mejorar visibilidad de hover en touch */
+  .action-btn:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+  }
+}
+
+/* Optimizaciones adicionales para dispositivos muy pequeños */
+@media (max-width: 375px) {
+  .header-inner {
+    padding: 0 12px;
+  }
+  
+  .brand {
+    font-size: 22px;
+  }
+  
+  .action-btn {
+    width: 44px;
+    height: 44px;
+  }
+  
+  .header-actions {
+    gap: 8px;
+  }
+}

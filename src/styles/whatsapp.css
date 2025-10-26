@@ -1,0 +1,104 @@
+/* Estilos para botones de WhatsApp */
+.btn-whatsapp {
+  background: #25D366 !important;
+  color: white !important;
+  border: none !important;
+  padding: 12px 24px !important;
+  border-radius: 8px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  justify-content: center !important;
+  margin-bottom: 12px !important;
+  transition: all 0.3s ease !important;
+}
+
+.btn-whatsapp:hover {
+  background: #128C7E !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3) !important;
+}
+
+.btn-whatsapp:disabled {
+  background: #ccc !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.btn-whatsapp-submit {
+  background: #25D366 !important;
+  color: white !important;
+  border: none !important;
+  padding: 16px 32px !important;
+  border-radius: 8px !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  width: 100% !important;
+  justify-content: center !important;
+  transition: all 0.3s ease !important;
+  margin-top: 20px !important;
+}
+
+.btn-whatsapp-submit:hover {
+  background: #128C7E !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4) !important;
+}
+
+.checkout-description {
+  color: #666;
+  margin-bottom: 24px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.form-actions {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #eee;
+}
+
+/* Estilos para atributos del carrito */
+.ci-attributes {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 8px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.ci-color, .ci-size {
+  background: #f8f9fa;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #e9ecef;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+/* Estilos para selectores de talla en ProductPage */
+.size-option.selected {
+  background-color: #ffb6c1 !important;
+  color: #333 !important;
+  border-color: #ffb6c1 !important;
+  font-weight: 600;
+}
+
+.size-option {
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.size-option:hover {
+  background-color: #f0f0f0;
+}
