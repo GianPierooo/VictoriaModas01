@@ -28,8 +28,8 @@ export const generateWhatsAppMessage = (cartItems) => {
 };
 
 export const openWhatsApp = (message) => {
-  const phoneNumber = "51906517394"; // Número de WhatsApp de VictoriaModas
+  const phoneNumber = "993357672"; // Número de WhatsApp de VictoriaModas
   const encodedMessage = encodeURIComponent(message);
-  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+  const whatsappUrl = `https://wa.me/51${phoneNumber}?text=${encodedMessage}`;
   window.open(whatsappUrl, '_blank');
 };

@@ -1,99 +1,57 @@
-import Header from '../components/Header.jsx'
-import Footer from '../components/Footer.jsx'
-import AnnouncementBanner from '../components/AnnouncementBanner.jsx'
-import '../App.css'
-import './AccountPage.css'
+import { UserCircleIcon, ShoppingBagIcon, HeartIcon, CogIcon } from '@heroicons/react/24/outline'
+import Layout from '../components/Layout.jsx'
 
 export default function AccountPage() {
+  const menuItems = [
+    { icon: UserCircleIcon, label: 'Mi Perfil', href: '#' },
+    { icon: ShoppingBagIcon, label: 'Mis Pedidos', href: '#' },
+    { icon: HeartIcon, label: 'Lista de Deseos', href: '#' },
+    { icon: CogIcon, label: 'Configuración', href: '#' },
+  ]
+
   return (
-    <div className="account-page">
-      <AnnouncementBanner />
-      <Header />
-      
-      {/* Contenido principal */}
-      <section className="account-unavailable-section">
-        <div className="container">
-          <div className="account-unavailable-content">
-            {/* Icono */}
-            <div className="unavailable-icon">
-              <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-              </svg>
-            </div>
+    <Layout>
+      <div className="bg-gray-50 py-12">
+        <div className="container mx-auto px-4">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-gray-900 mb-8">
+            Mi Cuenta
+          </h1>
 
-            {/* Mensaje principal */}
-            <h1>Cuentas de Usuario</h1>
-            <h2>Próximamente disponible</h2>
-            
-            <p className="unavailable-description">
-              Estamos trabajando en crear una experiencia de cuenta personalizada para ti. 
-              Pronto podrás registrarte, guardar tus productos favoritos y gestionar tus pedidos.
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {menuItems.map((item, idx) => {
+              const Icon = item.icon
+              return (
+                <a
+                  key={idx}
+                  href={item.href}
+                  className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow group"
+                >
+                  <div className="w-12 h-12 rounded-full bg-rose-100 flex items-center justify-center mb-4 group-hover:bg-rose group-hover:scale-110 transition-all">
+                    <Icon className="w-6 h-6 text-rose group-hover:text-white" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {item.label}
+                  </h3>
+                </a>
+              )
+            })}
+          </div>
+
+          {/* Placeholder */}
+          <div className="mt-12 bg-white rounded-lg shadow-sm p-12 text-center">
+            <UserCircleIcon className="w-24 h-24 text-gray-300 mx-auto mb-6" />
+            <h2 className="text-2xl font-serif font-bold text-gray-900 mb-3">
+              Funcionalidad en Desarrollo
+            </h2>
+            <p className="text-gray-600 mb-8">
+              Pronto podrás gestionar tu cuenta, ver tus pedidos y más.
             </p>
-
-            {/* Características futuras */}
-            <div className="coming-features">
-              <div className="feature-card">
-                <div className="feature-icon">🔐</div>
-                <h3>Cuenta Personal</h3>
-                <p>Crea tu cuenta y accede de forma segura</p>
-              </div>
-              
-              <div className="feature-card">
-                <div className="feature-icon">❤️</div>
-                <h3>Lista de Favoritos</h3>
-                <p>Guarda tus productos preferidos</p>
-              </div>
-              
-              <div className="feature-card">
-                <div className="feature-icon">📦</div>
-                <h3>Historial de Pedidos</h3>
-                <p>Revisa tus compras anteriores</p>
-              </div>
-              
-              <div className="feature-card">
-                <div className="feature-icon">⚡</div>
-                <h3>Compra Rápida</h3>
-                <p>Checkout más rápido con tus datos guardados</p>
-              </div>
-            </div>
-
-            {/* Acción alternativa */}
-            <div className="alternative-actions">
-              <h3>Mientras tanto, puedes:</h3>
-              <div className="action-buttons">
-                <a href="/" className="btn-primary">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                  </svg>
-                  Ir al Inicio
-                </a>
-                <a href="/contacto" className="btn-secondary">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                  </svg>
-                  Contáctanos
-                </a>
-              </div>
-            </div>
-
-            {/* Notificación */}
-            <div className="notification-box">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-              </svg>
-              <p>
-                ¿Quieres ser notificado cuando las cuentas estén disponibles? 
-                <a href="/contacto"> Escríbenos</a>
-              </p>
-            </div>
+            <a href="/vestidos" className="btn-primary">
+              Explorar productos
+            </a>
           </div>
         </div>
-      </section>
-
-      <Footer />
-    </div>
+      </div>
+    </Layout>
   )
 }
-

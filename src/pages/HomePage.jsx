@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useState, useRef } from 'react'
+import { ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon } from '@heroicons/react/24/outline'
 import Header from '../components/Header.jsx'
 import Footer from '../components/Footer.jsx'
 import AnnouncementBanner from '../components/AnnouncementBanner.jsx'
-import '../App.css'
-import './HomePage.css'
+import ProductCard from '../components/ProductCard.jsx'
 
-// ============= HERO FULL-SCREEN MEJORADO =============
+// ============= HERO SLIDER =============
 function Hero() {
   const sliderRef = useRef(null)
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -33,95 +33,141 @@ function Hero() {
   ]
 
   const scroll = (direction) => {
-    if (sliderRef.current) {
-      const scrollAmount = sliderRef.current.offsetWidth
-      const newIndex = direction === 'next' 
-        ? (currentSlide + 1) % slides.length 
-        : (currentSlide - 1 + slides.length) % slides.length
-      
-      sliderRef.current.scrollTo({
-        left: newIndex * scrollAmount,
-        behavior: 'smooth'
-      })
-      setCurrentSlide(newIndex)
-    }
+    const newIndex = direction === 'next' 
+      ? (currentSlide + 1) % slides.length 
+      : (currentSlide - 1 + slides.length) % slides.length
+    setCurrentSlide(newIndex)
   }
 
+  // Auto-play
   useEffect(() => {
-    const timer = setInterval(() => {
-      scroll('next')
-    }, 5000)
+    const timer = setInterval(() => scroll('next'), 5000)
     return () => clearInterval(timer)
   }, [currentSlide])
 
   return (
-    <section className="hero-fullscreen">
-      <div className="hero-slider" ref={sliderRef}>
-        {slides.map((slide, idx) => (
-          <div key={idx} className="hero-slide">
-            <div className="hero-bg" style={{ backgroundImage: `url(${slide.img})` }} />
-            <div className="hero-overlay">
-              <div className="container hero-content">
-                <p className="hero-kicker">{slide.subtitle}</p>
-                <h1 className="hero-title-main">{slide.title}</h1>
-                <div className="hero-actions">
-                  <Link to="/vestidos" className="btn btn-hero">{slide.cta}</Link>
-                  <Link to="/nosotros" className="btn btn-hero-outline">Nuestra historia</Link>
-                </div>
+    <section className="relative h-[60vh] md:h-[80vh] lg:h-screen overflow-hidden">
+      {/* Slides */}
+      {slides.map((slide, idx) => (
+        <div
+          key={idx}
+          className={`absolute inset-0 transition-opacity duration-1000 ${
+            idx === currentSlide ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          {/* Background Image with Parallax */}
+          <div
+            className="absolute inset-0 bg-cover bg-center scale-110 transition-transform duration-1000 ease-out"
+            style={{ backgroundImage: `url(${slide.img})` }}
+          />
+          
+          {/* Overlay Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />
+          
+          {/* Content */}
+          <div className="relative h-full flex items-center justify-center">
+            <div className="text-center text-white px-4 max-w-4xl transform transition-all duration-1000">
+              <p className="text-sm md:text-base uppercase tracking-widest mb-4 opacity-90 animate-fade-in">
+                {slide.subtitle}
+              </p>
+              <h1 className="text-4xl md:text-5xl lg:text-7xl font-serif font-bold mb-8 animate-slide-up">
+                {slide.title}
+              </h1>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in">
+                <Link 
+                  to="/vestidos" 
+                  className="btn-primary transform transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+                >
+                  {slide.cta}
+                </Link>
+                <Link 
+                  to="/nosotros" 
+                  className="btn-white transform transition-all duration-300 hover:scale-105"
+                >
+                  Nuestra historia
+                </Link>
               </div>
             </div>
           </div>
-        ))}
-      </div>
-      
-      {/* Controles de navegación */}
-      <div className="hero-controls">
-        <button className="hero-nav-btn" onClick={() => scroll('prev')} aria-label="Anterior">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
+        </div>
+      ))}
+
+      {/* Navigation Buttons */}
+      <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-between px-4 md:px-8 pointer-events-none">
+        <button
+          onClick={() => scroll('prev')}
+          className="pointer-events-auto w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 flex items-center justify-center transition-colors"
+          aria-label="Anterior"
+        >
+          <ChevronLeftIcon className="w-6 h-6 text-white" />
         </button>
-        <button className="hero-nav-btn" onClick={() => scroll('next')} aria-label="Siguiente">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-            <polyline points="9 18 15 12 9 6"></polyline>
-          </svg>
+        <button
+          onClick={() => scroll('next')}
+          className="pointer-events-auto w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 flex items-center justify-center transition-colors"
+          aria-label="Siguiente"
+        >
+          <ChevronRightIcon className="w-6 h-6 text-white" />
         </button>
       </div>
 
-      {/* Indicadores de slides */}
-      <div className="hero-indicators">
+      {/* Indicators */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2">
         {slides.map((_, idx) => (
           <button
             key={idx}
-            className={`hero-indicator ${currentSlide === idx ? 'active' : ''}`}
-            onClick={() => {
-              sliderRef.current?.scrollTo({
-                left: idx * sliderRef.current.offsetWidth,
-                behavior: 'smooth'
-              })
-              setCurrentSlide(idx)
-            }}
+            onClick={() => setCurrentSlide(idx)}
+            className={`h-2 rounded-full transition-all ${
+              idx === currentSlide ? 'w-8 bg-white' : 'w-2 bg-white/50'
+            }`}
             aria-label={`Ir a slide ${idx + 1}`}
           />
         ))}
       </div>
 
-      {/* Indicador de scroll */}
-      <div 
-        className="scroll-indicator" 
+      {/* Scroll Indicator (hidden on mobile) */}
+      <button
         onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
-        role="button"
+        className="hidden lg:block absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce"
         aria-label="Desplázate hacia abajo"
-        tabIndex={0}
       >
-        <div className="scroll-indicator-icon" />
-      </div>
+        <ChevronDownIcon className="w-8 h-8 text-white" />
+      </button>
     </section>
   )
 }
 
-// ============= PRODUCTOS DESTACADOS / MÁS VENDIDOS =============
+// ============= SCROLL ANIMATION HOOK =============
+function useScrollAnimation() {
+  const [isVisible, setIsVisible] = useState(false)
+  const ref = useRef(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true)
+        }
+      },
+      { threshold: 0.1 }
+    )
+
+    if (ref.current) {
+      observer.observe(ref.current)
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current)
+      }
+    }
+  }, [])
+
+  return [ref, isVisible]
+}
+
+// ============= PRODUCTOS DESTACADOS =============
 function FeaturedProducts() {
+  const [ref, isVisible] = useScrollAnimation()
   const products = [
     {
       id: 'vestido-suplex-moderno',
@@ -162,51 +208,66 @@ function FeaturedProducts() {
   ]
 
   return (
-    <section className="section featured-products" aria-labelledby="featured-title">
-      <div className="container">
-        <div className="section-header">
-          <h2 id="featured-title">Más Vendidos</h2>
-          <p className="section-subtitle">Las prendas favoritas de nuestras clientas</p>
+    <section 
+      ref={ref}
+      className={`relative py-12 md:py-16 lg:py-20 bg-gradient-to-b from-rose-50 to-white overflow-hidden transition-all duration-1000 ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
+      }`}
+      aria-labelledby="featured-title"
+    >
+      {/* Círculos decorativos */}
+      <div className="absolute top-10 right-10 w-64 h-64 bg-gradient-radial-rose rounded-full opacity-30 animate-pulse-soft pointer-events-none"></div>
+      <div className="absolute bottom-20 left-10 w-48 h-48 bg-gradient-radial-rose rounded-full opacity-20 animate-float pointer-events-none"></div>
+      
+      <div className="container mx-auto px-4 relative z-10">
+        {/* Header */}
+        <div className="text-center mb-12 transform transition-all duration-1000">
+          <h2 
+            id="featured-title" 
+            className={`text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-6 tracking-tight transition-all duration-1000 ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
+          >
+            <span className="relative inline-block group">
+              <span className="absolute -inset-6 bg-gradient-to-r from-rose/20 via-rose-100/30 to-rose/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
+              <span className="relative inline-flex items-baseline gap-3">
+                <span className="text-rose font-light">Más</span>
+                <span className="text-gray-900 font-bold">Vendidos</span>
+              </span>
+            </span>
+          </h2>
+          <p 
+            className={`text-lg md:text-xl text-gray-600 mb-6 transition-all duration-1000 delay-100 ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
+          >
+            Las prendas favoritas de nuestras clientas
+          </p>
+          {/* Línea decorativa animada */}
+          <div className={`w-24 h-1 bg-gradient-to-r from-rose to-rose-dark mx-auto rounded-full transition-all duration-1000 delay-200 ${
+            isVisible ? 'scale-x-100 opacity-100' : 'scale-x-0 opacity-0'
+          }`}></div>
         </div>
-        <div className="products-grid">
+
+        {/* Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {products.map((product) => (
-            <article key={product.id} className="product-card">
-              {product.badge && (
-                <span className={`product-badge ${product.badge === 'Nuevo' ? 'badge-new' : product.badge.startsWith('-') ? 'badge-sale' : 'badge-special'}`}>
-                  {product.badge}
-                </span>
-              )}
-              <Link to={`/producto/${product.id}`} className="product-image-wrapper">
-                <img 
-                  src={product.image} 
-                  alt={product.name} 
-                  className="product-image"
-                  loading="lazy"
-                />
-              </Link>
-              <div className="product-info">
-                <p className="product-category">{product.category}</p>
-                <h3 className="product-name">
-                  <Link to={`/producto/${product.id}`}>
-                    {product.name}
-                  </Link>
-                </h3>
-                <Link to={`/producto/${product.id}`} className="btn btn-product">
-                  Ver detalles
-                </Link>
-              </div>
-            </article>
+            <ProductCard key={product.id} product={product} showSizes={false} />
           ))}
         </div>
-        <div className="section-cta">
-          <Link to="/vestidos" className="btn btn-outline btn-large">Ver todos los productos</Link>
+
+        {/* CTA */}
+        <div className="mt-12 text-center">
+          <Link to="/vestidos" className="btn-outline">
+            Ver todos los productos
+          </Link>
         </div>
       </div>
     </section>
   )
 }
 
-// ============= COLECCIONES VISUALES GRANDES =============
+// ============= COLECCIONES VISUALES =============
 function Collections() {
   const collections = [
     {
@@ -226,20 +287,43 @@ function Collections() {
   ]
 
   return (
-    <section className="collections-showcase">
-      <div className="container">
-        <div className="collections-grid">
+    <section className="relative py-12 md:py-16 overflow-hidden">
+      {/* Círculo decorativo */}
+      <div className="absolute top-1/2 left-0 w-96 h-96 bg-gradient-radial-rose rounded-full opacity-20 -translate-x-1/2 pointer-events-none"></div>
+      
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {collections.map((collection) => (
-            <div key={collection.id} className="collection-card-large">
-              <div className="collection-image" style={{ backgroundImage: `url(${collection.image})` }} />
-              <div className="collection-overlay">
-                <div className="collection-content">
-                  <h3 className="collection-title">{collection.title}</h3>
-                  <p className="collection-description">{collection.description}</p>
-                  <Link to={collection.link} className="btn btn-white">Explorar colección</Link>
+            <Link
+              key={collection.id}
+              to={collection.link}
+              className="group relative h-96 rounded-2xl overflow-hidden shadow-md hover:shadow-rose-xl transition-all duration-500"
+            >
+              {/* Image */}
+              <div
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                style={{ backgroundImage: `url(${collection.image})` }}
+              />
+              
+              {/* Overlay con tinte rosa */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-rose-900/20 to-transparent" />
+              
+              {/* Content */}
+              <div className="absolute inset-0 flex items-end p-8">
+                <div className="text-white">
+                  <h3 className="text-3xl font-serif font-bold mb-2">
+                    {collection.title}
+                  </h3>
+                  <p className="text-white/90 mb-4">
+                    {collection.description}
+                  </p>
+                  <span className="inline-flex items-center gap-2 text-white underline underline-offset-4">
+                    Explorar colección
+                    <ChevronRightIcon className="w-5 h-5" />
+                  </span>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
@@ -247,7 +331,7 @@ function Collections() {
   )
 }
 
-// ============= CATEGORÍAS CON OVERLAYS =============
+// ============= CATEGORÍAS =============
 function CategoryShowcase() {
   const categories = [
     { name: 'Vestidos', img: 'https://images.unsplash.com/photo-1566174053879-31528523f8ae?q=80&w=800&auto=format&fit=crop', link: '/vestidos' },
@@ -257,19 +341,47 @@ function CategoryShowcase() {
   ]
 
   return (
-    <section className="section category-showcase" aria-labelledby="category-title">
-      <div className="container">
-        <div className="section-header">
-          <h2 id="category-title">Explora por categoría</h2>
-          <p className="section-subtitle">Encuentra el estilo perfecto para ti</p>
+    <section className="relative py-12 md:py-16 lg:py-20 bg-gradient-to-br from-rose-50 via-white to-rose-50/30 overflow-hidden" aria-labelledby="category-title">
+      {/* Círculos decorativos múltiples */}
+      <div className="absolute top-0 right-1/4 w-72 h-72 bg-gradient-radial-rose rounded-full opacity-25 animate-pulse-soft pointer-events-none"></div>
+      <div className="absolute bottom-0 left-1/3 w-56 h-56 bg-gradient-radial-rose rounded-full opacity-20 pointer-events-none"></div>
+      
+      <div className="container mx-auto px-4 relative z-10">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h2 id="category-title" className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-gray-900 mb-4 animate-fade-in">
+            Explora por categoría
+          </h2>
+          <p className="text-lg text-gray-600 animate-fade-in">
+            Encuentra el estilo perfecto para ti
+          </p>
+          {/* Línea decorativa rosa */}
+          <div className="w-24 h-1 bg-gradient-rose mx-auto mt-6 rounded-full"></div>
         </div>
-        <div className="category-grid">
+
+        {/* Grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {categories.map((cat) => (
-            <Link key={cat.name} to={cat.link} className="category-card">
-              <div className="category-image" style={{ backgroundImage: `url(${cat.img})` }} />
-              <div className="category-overlay">
-                <h3 className="category-name">{cat.name}</h3>
-                <span className="category-arrow">→</span>
+            <Link
+              key={cat.name}
+              to={cat.link}
+              className="group relative h-64 md:h-80 rounded-xl overflow-hidden shadow-md hover:shadow-rose-lg transition-all duration-500"
+            >
+              {/* Image */}
+              <div
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                style={{ backgroundImage: `url(${cat.img})` }}
+              />
+              
+              {/* Overlay con tinte rosa */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-rose-900/10 to-transparent group-hover:from-rose-900/30 transition-all duration-500" />
+              
+              {/* Content */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
+                <h3 className="text-2xl md:text-3xl font-serif font-bold mb-2">
+                  {cat.name}
+                </h3>
+                <ChevronRightIcon className="w-6 h-6 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
             </Link>
           ))}
@@ -282,33 +394,55 @@ function CategoryShowcase() {
 // ============= PRODUCTO SPOTLIGHT =============
 function ProductSpotlight() {
   return (
-    <section className="product-spotlight">
-      <div className="container">
-        <div className="spotlight-grid">
-          <div className="spotlight-media">
-            <img 
-              src="/imagenes/vestidos/vestido_suplex01/azul_adelante.png" 
+    <section className="relative py-12 md:py-16 lg:py-20 bg-gradient-to-br from-white to-rose-50 overflow-hidden">
+      {/* Círculos decorativos */}
+      <div className="absolute top-20 right-20 w-80 h-80 bg-gradient-radial-rose rounded-full opacity-15 pointer-events-none"></div>
+      <div className="absolute bottom-10 left-20 w-60 h-60 bg-gradient-radial-rose rounded-full opacity-10 animate-pulse-soft pointer-events-none"></div>
+      
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          {/* Image */}
+          <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-gray-100 shadow-rose-md hover:shadow-rose-xl transition-all duration-500 group">
+            <img
+              src="/imagenes/vestidos/vestido_suplex01/azul_adelante.png"
               alt="Vestido Suplex Moderno"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               loading="lazy"
             />
+            {/* Overlay rosa sutil */}
+            <div className="absolute inset-0 bg-rose/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           </div>
-          <div className="spotlight-content">
-            <p className="spotlight-kicker">Producto destacado</p>
-            <h2 className="spotlight-title">VESTIDO SUPLEX MODERNO</h2>
-            <p className="spotlight-description">
+
+          {/* Content */}
+          <div>
+            <p className="text-rose text-sm uppercase tracking-wide mb-2">
+              Producto destacado
+            </p>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-gray-900 mb-6">
+              VESTIDO SUPLEX MODERNO
+            </h2>
+            <p className="text-lg text-gray-600 mb-6 leading-relaxed">
               Vestido moderno confeccionado en suplex de alta calidad. Ajuste perfecto al cuerpo 
               con diseño versátil y elegante. Ideal para cualquier ocasión, desde eventos casuales 
-              hasta reuniones formales. Comodidad y estilo en una sola prenda. Disponible en azul, 
-              blanco, negro y vino.
+              hasta reuniones formales. Comodidad y estilo en una sola prenda.
             </p>
-            <ul className="spotlight-features">
-              <li><strong>Tela:</strong> Suplex de alta calidad</li>
-              <li><strong>Corte:</strong> Ajuste perfecto y moderno</li>
-              <li><strong>Tallas:</strong> S a L</li>
+            <ul className="space-y-3 mb-8">
+              <li className="flex items-start gap-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-rose mt-2 flex-shrink-0"></span>
+                <span className="text-gray-700"><strong>Tela:</strong> Suplex de alta calidad</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-rose mt-2 flex-shrink-0"></span>
+                <span className="text-gray-700"><strong>Corte:</strong> Ajuste perfecto y moderno</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-rose mt-2 flex-shrink-0"></span>
+                <span className="text-gray-700"><strong>Tallas:</strong> S a L</span>
+              </li>
             </ul>
-            <div className="spotlight-actions">
-              <Link to="/producto/vestido-suplex-moderno" className="btn btn-spotlight">Ver detalles completos</Link>
-            </div>
+            <Link to="/producto/vestido-suplex-moderno" className="btn-primary">
+              Ver detalles completos
+            </Link>
           </div>
         </div>
       </div>
@@ -316,171 +450,70 @@ function ProductSpotlight() {
   )
 }
 
-// ============= SOCIAL PROOF / FAVORITOS DE INSTAGRAM =============
+// ============= SOCIAL FAVORITES (Simplified) =============
 function SocialFavorites() {
-  const [currentSlide, setCurrentSlide] = useState(2) // Empezar en el centro
-  const [isHovered, setIsHovered] = useState(false)
-
   const favorites = [
-    { 
-      id: 'vestido-suplex-moderno', 
-      name: 'Vestido Suplex Moderno',
-      image: '/imagenes/vestidos/vestido_suplex01/negro_adelante.png',
-      likes: '3.2k',
-      collection: 'Colección Suplex'
-    },
-    { 
-      id: 'vestido-lame-elegante', 
-      name: 'Vestido Lame Elegante',
-      image: '/imagenes/vestidos/vestido_lame01/azul_adelante.png',
-      likes: '2.8k',
-      collection: 'Elegancia Premium'
-    },
-    { 
-      id: 'pantalon-scuba-vena', 
-      name: 'Pantalón Scuba Vena',
-      image: '/imagenes/pantalones/pantalon_scuba/Pantalon_scuba_vino_adelante.png',
-      likes: '2.5k',
-      collection: 'Scuba Collection'
-    },
-    { 
-      id: 'vestido-rit-elegante', 
-      name: 'Vestido Rit Elegante',
-      image: '/imagenes/vestidos/vestido_rit02/vestido_rit_negro_delante.png',
-      likes: '2.9k',
-      collection: 'Rit Premium'
-    },
-    { 
-      id: 'blusa-seda-francesa', 
-      name: 'Blusa Seda Francesa',
-      image: '/imagenes/blusas/blusa_seda_francesa/negro_adelante.png',
-      likes: '3.1k',
-      collection: 'Seda Collection'
-    }
+    { id: 'vestido-suplex-moderno', name: 'Vestido Suplex Moderno', image: '/imagenes/vestidos/vestido_suplex01/negro_adelante.png', collection: 'Colección Suplex' },
+    { id: 'vestido-lame-elegante', name: 'Vestido Lame Elegante', image: '/imagenes/vestidos/vestido_lame01/azul_adelante.png', collection: 'Elegancia Premium' },
+    { id: 'pantalon-scuba-vena', name: 'Pantalón Scuba Vena', image: '/imagenes/pantalones/pantalon_scuba/Pantalon_scuba_vino_adelante.png', collection: 'Scuba Collection' },
   ]
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % favorites.length)
-  }
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + favorites.length) % favorites.length)
-  }
-
-  useEffect(() => {
-    if (!isHovered) {
-      const timer = setInterval(() => {
-        nextSlide()
-      }, 4000)
-      return () => clearInterval(timer)
-    }
-  }, [currentSlide, isHovered])
-
-         // Calcular el índice relativo de cada tarjeta respecto al centro
-         const getCardPosition = (index) => {
-           const totalCards = favorites.length
-           let relativeIndex = index - currentSlide
-           
-           // Normalizar el índice para que esté en el rango [-3, 3] para mostrar más tarjetas
-           if (relativeIndex > totalCards / 2) {
-             relativeIndex -= totalCards
-           } else if (relativeIndex < -totalCards / 2) {
-             relativeIndex += totalCards
-           }
-           
-           return relativeIndex
-         }
-
   return (
-    <section 
-      className="social-favorites-fullwidth" 
-      aria-labelledby="social-title"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {/* Header centrado */}
-      <div className="social-header-container">
-        <div className="social-header-content">
-          <h2 id="social-title">Favoritos de Instagram</h2>
-          <p className="social-subtitle">Las prendas que más aman nuestras clientas en redes sociales</p>
+    <section className="py-12 md:py-16 lg:py-20 bg-gradient-to-b from-white to-gray-50" aria-labelledby="social-title">
+      <div className="container mx-auto px-4">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h2 id="social-title" className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-gray-900 mb-4">
+            Favoritos de Instagram
+          </h2>
+          <p className="text-lg text-gray-600">
+            Las prendas que más aman nuestras clientas en redes sociales
+          </p>
         </div>
-      </div>
 
-      {/* Carousel superpuesto de ancho completo */}
-      <div className="social-carousel-overlay-container">
-        <button 
-          className="social-nav-overlay social-nav-prev" 
-          onClick={prevSlide} 
-          aria-label="Anterior"
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
-        </button>
-
-        <div className="social-carousel-overlay">
-               {favorites.map((item, index) => {
-                 const position = getCardPosition(index)
-                 const isCenter = position === 0
-                 const isVisible = Math.abs(position) <= 3
-                 
-                 return (
-                   <div 
-                     key={item.id} 
-                     className={`social-card-overlay ${isCenter ? 'center' : ''} ${isVisible ? 'visible' : 'hidden'}`}
-                     style={{
-                       '--position': position,
-                       '--z-index': isCenter ? 10 : 5 - Math.abs(position)
-                     }}
-                   >
-                <div className="social-card-overlay-image">
-                  <img 
-                    src={item.image} 
-                    alt={item.name}
-                    loading="lazy"
-                  />
-                </div>
-                <div className="social-card-overlay-content">
-                  <h3 className="social-card-overlay-collection">{item.collection}</h3>
-                  <Link to={`/producto/${item.id}`} className="social-card-overlay-link">
-                    Aprende más
-                  </Link>
-                </div>
+        {/* Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {favorites.map((item) => (
+            <Link
+              key={item.id}
+              to={`/producto/${item.id}`}
+              className="group relative aspect-[3/4] rounded-2xl overflow-hidden bg-gray-100"
+            >
+              <img
+                src={item.image}
+                alt={item.name}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute bottom-0 left-0 right-0 p-6 text-white translate-y-full group-hover:translate-y-0 transition-transform">
+                <h3 className="text-xl font-semibold mb-1">{item.collection}</h3>
+                <span className="text-sm underline">Aprende más</span>
               </div>
-            )
-          })}
+            </Link>
+          ))}
         </div>
 
-        <button 
-          className="social-nav-overlay social-nav-next" 
-          onClick={nextSlide} 
-          aria-label="Siguiente"
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-            <polyline points="9 18 15 12 9 6"></polyline>
-          </svg>
-        </button>
-      </div>
-
-      {/* CTA centrado */}
-      <div className="social-cta-container">
-        <a 
-          href="https://www.facebook.com/profile.php?id=61555283742078" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          className="social-cta-btn"
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M22 12.07C22 6.48 17.52 2 11.93 2S1.86 6.48 1.86 12.07C1.86 17.12 5.57 21.25 10.38 22v-7.01H7.9v-2.92h2.48V9.41c0-2.45 1.46-3.8 3.7-3.8 1.07 0 2.18.19 2.18.19v2.4h-1.23c-1.21 0-1.59.75-1.59 1.52v1.82h2.71l-.43 2.92h-2.28V22c4.81-.75 8.52-4.88 8.52-9.93z"/>
-          </svg>
-          Síguenos en Facebook
-        </a>
+        {/* CTA */}
+        <div className="mt-12 text-center">
+          <a
+            href="https://www.facebook.com/profile.php?id=61555283742078"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full transition-colors"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M22 12.07C22 6.48 17.52 2 11.93 2S1.86 6.48 1.86 12.07C1.86 17.12 5.57 21.25 10.38 22v-7.01H7.9v-2.92h2.48V9.41c0-2.45 1.46-3.8 3.7-3.8 1.07 0 2.18.19 2.18.19v2.4h-1.23c-1.21 0-1.59.75-1.59 1.52v1.82h2.71l-.43 2.92h-2.28V22c4.81-.75 8.52-4.88 8.52-9.93z"/>
+            </svg>
+            Síguenos en Facebook
+          </a>
+        </div>
       </div>
     </section>
   )
 }
 
-// ============= BLOG MEJORADO =============
+// ============= BLOG =============
 function BlogNoticias() {
   const posts = [
     {
@@ -504,30 +537,55 @@ function BlogNoticias() {
   ]
 
   return (
-    <section className="section blog-section" aria-labelledby="blog-title">
-      <div className="container">
-        <div className="section-header">
-          <h2 id="blog-title">Blog y Novedades</h2>
-          <p className="section-subtitle">Consejos de moda, tendencias y guías de estilo</p>
+    <section className="relative py-12 md:py-16 lg:py-20 bg-white overflow-hidden" aria-labelledby="blog-title">
+      {/* Círculos decorativos */}
+      <div className="absolute top-10 left-10 w-72 h-72 bg-gradient-radial-rose rounded-full opacity-20 animate-float pointer-events-none"></div>
+      <div className="absolute bottom-20 right-10 w-64 h-64 bg-gradient-radial-rose rounded-full opacity-15 pointer-events-none"></div>
+      
+      <div className="container mx-auto px-4 relative z-10">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h2 id="blog-title" className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-gray-900 mb-4 animate-fade-in">
+            Blog y Novedades
+          </h2>
+          <p className="text-lg text-gray-600 animate-fade-in">
+            Consejos de moda, tendencias y guías de estilo
+          </p>
+          {/* Línea decorativa */}
+          <div className="w-24 h-1 bg-gradient-rose mx-auto mt-6 rounded-full"></div>
         </div>
-        <div className="blog-grid">
-          {posts.map((post) => (
-            <article key={post.title} className="blog-card">
-              <div className="blog-media">
-                <img 
-                  src={post.img} 
+
+        {/* Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {posts.map((post, idx) => (
+            <article key={post.title} className="group animate-slide-up" style={{ animationDelay: `${idx * 100}ms` }}>
+              {/* Image */}
+              <div className="relative aspect-video rounded-xl overflow-hidden bg-gray-100 mb-4 shadow-md group-hover:shadow-rose-lg transition-all duration-500">
+                <img
+                  src={post.img}
                   alt={post.title}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   loading="lazy"
                 />
+                {/* Overlay rosa sutil en hover */}
+                <div className="absolute inset-0 bg-rose/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               </div>
-              <div className="blog-content">
-                <time className="blog-date">{post.date}</time>
-                <h3 className="blog-title">{post.title}</h3>
-                <p className="blog-excerpt">{post.excerpt}</p>
-                <Link className="blog-link" to="/vestidos">
-                  Leer más →
-                </Link>
-              </div>
+
+              {/* Content */}
+              <time className="text-sm text-gray-500">{post.date}</time>
+              <h3 className="text-xl font-semibold text-gray-900 mt-2 mb-3 group-hover:text-rose transition-colors">
+                {post.title}
+              </h3>
+              <p className="text-gray-600 mb-4 line-clamp-2">
+                {post.excerpt}
+              </p>
+              <Link
+                to="/vestidos"
+                className="inline-flex items-center gap-2 text-rose font-medium hover:gap-3 transition-all"
+              >
+                Leer más
+                <ChevronRightIcon className="w-4 h-4" />
+              </Link>
             </article>
           ))}
         </div>
@@ -539,19 +597,19 @@ function BlogNoticias() {
 // ============= HOMEPAGE PRINCIPAL =============
 export default function HomePage() {
   return (
-    <div>
+    <>
       <AnnouncementBanner />
       <Header />
       <main id="main-content">
-      <Hero />
-      <FeaturedProducts />
-      <Collections />
-      <CategoryShowcase />
-      <ProductSpotlight />
-      <SocialFavorites />
-      <BlogNoticias />
+        <Hero />
+        <FeaturedProducts />
+        <Collections />
+        <CategoryShowcase />
+        <ProductSpotlight />
+        <SocialFavorites />
+        <BlogNoticias />
       </main>
       <Footer />
-    </div>
+    </>
   )
 }

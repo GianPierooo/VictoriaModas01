@@ -1,175 +1,147 @@
-import Header from '../components/Header.jsx'
-import Footer from '../components/Footer.jsx'
-import AnnouncementBanner from '../components/AnnouncementBanner.jsx'
-import '../App.css'
-import './AboutPage.css'
+import { SparklesIcon, HeartIcon, CubeIcon } from '@heroicons/react/24/outline'
+import Layout from '../components/Layout.jsx'
 
 export default function AboutPage() {
   const values = [
     {
-      icon: '✨',
+      icon: SparklesIcon,
       title: 'Elegancia',
       description: 'Diseños minimalistas que realzan la belleza natural de cada mujer con sofisticación atemporal.'
     },
     {
-      icon: '🌸',
+      icon: HeartIcon,
       title: 'Calidad Premium',
       description: 'Telas exclusivas seleccionadas cuidadosamente: scuba, suplex, seda francesa y angora.'
     },
     {
-      icon: '💎',
+      icon: CubeIcon,
       title: 'Exclusividad',
       description: 'Colecciones limitadas confeccionadas con pasión y atención al detalle en cada puntada.'
     }
   ]
 
+  const stats = [
+    { number: '5+', label: 'Años de experiencia' },
+    { number: '1000+', label: 'Clientes satisfechas' },
+    { number: '500+', label: 'Diseños únicos' }
+  ]
+
   return (
-    <div className="about-page">
-      <AnnouncementBanner />
-      <Header />
-      
-      {/* Hero Header */}
-      <div className="about-header">
-        <div className="container">
-          <div className="about-header-content">
-            <h1 className="about-main-title">Nuestra Historia</h1>
-            <p className="about-subtitle">
-              Más que moda, creamos experiencias que empoderan a la mujer moderna
-            </p>
-            <div className="about-stats">
-              <div className="stat-item">
-                <span className="stat-number">5+</span>
-                <span className="stat-label">Años de experiencia</span>
-              </div>
-              <div className="stat-item">
-                <span className="stat-number">1000+</span>
-                <span className="stat-label">Clientes satisfechas</span>
-              </div>
-              <div className="stat-item">
-                <span className="stat-number">500+</span>
-                <span className="stat-label">Diseños únicos</span>
-              </div>
+    <Layout>
+        {/* Hero */}
+        <div className="relative h-56 md:h-72 bg-gradient-to-r from-rose via-rose-100 to-rose-50 overflow-hidden">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-white/20 rounded-full blur-3xl animate-pulse-soft"></div>
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-rose-dark/20 rounded-full blur-3xl animate-float"></div>
+          
+          <div className="relative h-full flex items-center">
+            <div className="container mx-auto px-6">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-bold mb-4 animate-fade-in">
+                <span className="text-white drop-shadow-lg">Nuestra</span>
+                <span className="text-gray-900"> Historia</span>
+              </h1>
+              <p className="text-lg md:text-xl text-gray-800 font-medium max-w-2xl">
+                Más que moda, creamos experiencias que empoderan a la mujer moderna
+              </p>
+              <div className="w-24 h-1 bg-white/80 mt-4 rounded-full"></div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Sección principal sobre nosotros */}
-      <section className="about-section" aria-labelledby="about-title">
-        <div className="container">
-          <div className="about-grid">
-            <div className="about-media">
-              <img
-                src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=1200&auto=format&fit=crop"
-                alt="Esencia de VictoriaModas"
-              />
-            </div>
-            <div className="about-content">
-              <h2 id="about-title">VictoriaModas</h2>
-              <p>
-                Nacimos con la misión de ofrecer moda femenina que combine <strong>elegancia, modernidad y versatilidad</strong>. 
-                Creemos en el poder de la simplicidad y en la calidad incomparable de las telas premium como scuba, 
-                suplex, lame, seda francesa, peluche, paño carnero y angora.
-              </p>
-              <p>
-                Nuestra filosofía es vestir a la mujer contemporánea con prendas <strong>atemporales, cómodas y 
-                cuidadosamente confeccionadas</strong>, inspiradas en un estilo minimalista y sofisticado que 
-                trasciende las tendencias pasajeras.
-              </p>
-              <p>
-                Cada colección es diseñada pensando en ti: la mujer que valora la calidad, aprecia los detalles 
-                y busca expresar su personalidad a través de la moda con refinamiento y confianza.
-              </p>
-              <div className="about-note">
-                <p>
-                  Gracias por confiar en VictoriaModas. Diseñamos cada colección con pasión y detalle 
-                  para acompañarte en cada momento importante de tu vida.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Valores de la marca */}
-      <section className="values-section" aria-labelledby="values-title">
-        <div className="container">
-          <div className="values-header">
-            <h2 id="values-title">Nuestros Valores</h2>
-            <p className="about-subtitle">Los pilares que definen nuestra esencia</p>
-          </div>
-          <div className="values-grid">
-            {values.map((value, index) => (
-              <div key={index} className="value-card">
-                <div className="value-icon">{value.icon}</div>
-                <h3>{value.title}</h3>
-                <p>{value.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Ubicación */}
-      <section className="location-section" aria-labelledby="location-title">
-        <div className="container">
-          <div className="location-header">
-            <h2 id="location-title">Nuestra Ubicación</h2>
-            <p className="about-subtitle">Visítanos en nuestra tienda física</p>
-          </div>
-          <div className="location-content">
-            <div className="location-info">
-              <div className="location-details">
-                <h3>📍 Galería Naranja - Puesto 47-48</h3>
-                <p style={{fontSize: '16px', fontWeight: '500', color: '#666', marginTop: '8px'}}>
-                  Calle Misti con Huascarán
-                </p>
-                <p>
-                  Estamos ubicados en el corazón comercial de la ciudad, en Galería Naranja, 
-                  puesto 47-48. Nuestro espacio está diseñado para brindarte una experiencia 
-                  de compra única y personalizada.
-                </p>
-                <div className="location-features">
-                  <div className="feature-item">
-                    <span className="feature-icon">🕒</span>
-                    <span className="feature-text">Atención en Galería: Lunes a Sábado 4:00 AM - 3:00 PM</span>
+        {/* Stats */}
+        <div className="bg-white py-12 md:py-16">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-3 gap-4 md:gap-8 max-w-3xl mx-auto">
+              {stats.map((stat, idx) => (
+                <div key={idx} className="text-center">
+                  <div className="text-3xl md:text-5xl font-serif font-bold text-rose mb-2">
+                    {stat.number}
                   </div>
-                  <div className="feature-item">
-                    <span className="feature-icon">💬</span>
-                    <span className="feature-text">WhatsApp disponible 24/7</span>
-                  </div>
-                  <div className="feature-item">
-                    <span className="feature-icon">👗</span>
-                    <span className="feature-text">Prueba de prendas disponible</span>
+                  <div className="text-sm md:text-base text-gray-600">
+                    {stat.label}
                   </div>
                 </div>
-                <a 
-                  href="https://maps.app.goo.gl/igvX1ku7CCuvsCSu9" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="btn-location"
-                >
-                  📍 Ver en Google Maps
-                </a>
-              </div>
-            </div>
-            <div className="location-map">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3901.234567890123!2d-77.0282!3d-12.0464!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sGaler%C3%ADa%20Naranja!5e0!3m2!1ses!2spe!4v1234567890123!5m2!1ses!2spe"
-                width="100%"
-                height="400"
-                style={{ border: 0, borderRadius: '12px' }}
-                allowFullScreen=""
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Ubicación de VictoriaModas en Galería Naranja"
-              ></iframe>
+              ))}
             </div>
           </div>
         </div>
-      </section>
 
-      <Footer />
-    </div>
+        {/* About Content */}
+        <section className="py-12 md:py-16 lg:py-20">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              {/* Image */}
+              <div className="relative aspect-square rounded-2xl overflow-hidden">
+                <img
+                  src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=1200&auto=format&fit=crop"
+                  alt="Esencia de VictoriaModas"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              {/* Content */}
+              <div className="space-y-6">
+                <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900">
+                  VictoriaModas
+                </h2>
+                <div className="space-y-4 text-gray-600 leading-relaxed">
+                  <p>
+                    Nacimos con la misión de ofrecer moda femenina que combine <strong className="text-gray-900">elegancia, modernidad y versatilidad</strong>. 
+                    Creemos en el poder de la simplicidad y en la calidad incomparable de las telas premium como scuba, 
+                    suplex, lame, seda francesa, peluche, paño carnero y angora.
+                  </p>
+                  <p>
+                    Nuestra filosofía es vestir a la mujer contemporánea con prendas <strong className="text-gray-900">atemporales, cómodas y 
+                    cuidadosamente confeccionadas</strong>, inspiradas en un estilo minimalista y sofisticado que 
+                    trasciende las tendencias pasajeras.
+                  </p>
+                  <p>
+                    Cada colección es diseñada pensando en ti: la mujer que valora la calidad, aprecia los detalles 
+                    y busca expresar su personalidad a través de la moda con refinamiento y confianza.
+                  </p>
+                </div>
+                <div className="p-6 bg-rose-50 rounded-lg border-l-4 border-rose">
+                  <p className="text-gray-700">
+                    Gracias por confiar en VictoriaModas. Diseñamos cada colección con pasión y detalle 
+                    para acompañarte en cada momento importante de tu vida.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Values */}
+        <section className="py-12 md:py-16 lg:py-20 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-gray-900 mb-4">
+                Nuestros Valores
+              </h2>
+              <p className="text-lg text-gray-600">
+                Los pilares que definen nuestra esencia
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {values.map((value, index) => {
+                const Icon = value.icon
+                return (
+                  <div key={index} className="bg-white rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-16 h-16 rounded-full bg-rose-100 flex items-center justify-center mb-6">
+                      <Icon className="w-8 h-8 text-rose" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                      {value.title}
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      {value.description}
+                    </p>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        </section>
+    </Layout>
   )
 }

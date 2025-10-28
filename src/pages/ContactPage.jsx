@@ -1,16 +1,20 @@
 import { useState } from 'react'
 import emailjs from '@emailjs/browser'
-import Header from '../components/Header.jsx'
-import Footer from '../components/Footer.jsx'
-import AnnouncementBanner from '../components/AnnouncementBanner.jsx'
-import '../App.css'
-import './ContactPage.css'
+import { 
+  MapPinIcon, 
+  PhoneIcon, 
+  EnvelopeIcon, 
+  ClockIcon,
+  BoltIcon,
+  SparklesIcon
+} from '@heroicons/react/24/outline'
+import Layout from '../components/Layout.jsx'
 
 // Configuración de EmailJS
 const EMAILJS_CONFIG = {
   serviceId: 'service_kvj4xba',
-  templateIdAdmin: 'template_q6s8zef',    // Template para VictoriaModas (admin)
-  templateIdClient: 'template_9vy0jq9',   // Template de confirmación para el cliente
+  templateIdAdmin: 'template_q6s8zef',
+  templateIdClient: 'template_9vy0jq9',
   publicKey: 'DcomytfMPeZ2O-AR8'
 }
 
@@ -18,14 +22,15 @@ export default function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
   const [errors, setErrors] = useState({})
   const [sending, setSending] = useState(false)
-  const [submitStatus, setSubmitStatus] = useState(null) // 'success' | 'error' | null
+  const [submitStatus, setSubmitStatus] = useState(null)
 
-  function handleChange(e) {
+  const handleChange = (e) => {
     const { name, value } = e.target
     setForm(prev => ({ ...prev, [name]: value }))
+    if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }))
   }
 
-  function validate() {
+  const validate = () => {
     const next = {}
     if (!form.name.trim()) next.name = '⚠ Ingresa tu nombre'
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) next.email = '⚠ Correo inválido'
@@ -35,7 +40,7 @@ export default function ContactPage() {
     return Object.keys(next).length === 0
   }
 
-  async function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (!validate()) return
     
@@ -51,33 +56,15 @@ export default function ContactPage() {
         to_email: 'victoriamodas1053@gmail.com'
       }
 
-      // 1️⃣ Enviar correo a VictoriaModas (admin) con los datos del cliente
-      await emailjs.send(
-        EMAILJS_CONFIG.serviceId,
-        EMAILJS_CONFIG.templateIdAdmin,
-        templateParams,
-        EMAILJS_CONFIG.publicKey
-      )
+      await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateIdAdmin, templateParams, EMAILJS_CONFIG.publicKey)
+      await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateIdClient, templateParams, EMAILJS_CONFIG.publicKey)
 
-      // 2️⃣ Enviar correo de confirmación al cliente
-      await emailjs.send(
-        EMAILJS_CONFIG.serviceId,
-        EMAILJS_CONFIG.templateIdClient,
-        templateParams,
-        EMAILJS_CONFIG.publicKey
-      )
-
-      // ✅ Éxito - Ambos correos enviados
       setSubmitStatus('success')
       setForm({ name: '', email: '', subject: '', message: '' })
-      setErrors({})
-      
       setTimeout(() => setSubmitStatus(null), 5000)
-      
     } catch (error) {
-      console.error('❌ Error al enviar mensaje:', error)
+      console.error('Error:', error)
       setSubmitStatus('error')
-      
       setTimeout(() => setSubmitStatus(null), 5000)
     } finally {
       setSending(false)
@@ -85,211 +72,225 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="contact-page">
-      <AnnouncementBanner />
-      <Header />
-      
-      {/* Hero Header */}
-      <div className="contact-header">
-        <div className="container">
-          <div className="contact-header-content">
-            <h1 className="contact-main-title">Contáctanos</h1>
-            <p className="contact-subtitle">
-              Estamos aquí para ayudarte. Escríbenos y resolveremos tus dudas
-            </p>
-            <div className="contact-features">
-              <div className="feature-item">
-                <span className="feature-icon">⚡</span>
-                <span className="feature-text">Respuesta rápida</span>
-              </div>
-              <div className="feature-item">
-                <span className="feature-icon">🎯</span>
-                <span className="feature-text">Atención personalizada</span>
-              </div>
-              <div className="feature-item">
-                <span className="feature-icon">💎</span>
-                <span className="feature-text">Soporte premium</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Sección principal de contacto */}
-      <section className="contact-section" aria-labelledby="contact-title">
-        <div className="container">
-          <div className="contact-grid">
-            {/* Formulario */}
-            <div className="contact-form-wrapper">
-              <h2 id="contact-title">Envíanos un mensaje</h2>
-              <p className="contact-intro">
-                ¿Tienes una consulta o deseas realizar un pedido? Completa el formulario y nos pondremos en contacto contigo a la brevedad.
+    <Layout>
+        {/* Hero */}
+        <div className="relative h-56 md:h-72 bg-gradient-to-r from-rose via-rose-100 to-rose-50 overflow-hidden">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-white/20 rounded-full blur-3xl animate-pulse-soft"></div>
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-rose-dark/20 rounded-full blur-3xl animate-float"></div>
+          
+          <div className="relative h-full flex items-center">
+            <div className="container mx-auto px-6">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-bold mb-4 animate-fade-in text-white drop-shadow-lg">
+                Contáctanos
+              </h1>
+              <p className="text-lg md:text-xl text-gray-800 font-medium">
+                Estamos aquí para ayudarte. Escríbenos y resolveremos tus dudas
               </p>
-              <form className="contact-form" onSubmit={handleSubmit} noValidate>
-                <div className="field">
-                  <label htmlFor="name">Nombre completo *</label>
-                  <input 
-                    id="name" 
-                    name="name" 
-                    type="text" 
-                    value={form.name} 
-                    onChange={handleChange} 
-                    aria-invalid={Boolean(errors.name)}
-                    placeholder="Tu nombre"
-                  />
-                  {errors.name && <span className="error" role="alert">{errors.name}</span>}
-                </div>
-                <div className="field">
-                  <label htmlFor="email">Correo electrónico *</label>
-                  <input 
-                    id="email" 
-                    name="email" 
-                    type="email" 
-                    value={form.email} 
-                    onChange={handleChange} 
-                    aria-invalid={Boolean(errors.email)}
-                    placeholder="correo@ejemplo.com"
-                  />
-                  {errors.email && <span className="error" role="alert">{errors.email}</span>}
-                </div>
-                <div className="field">
-                  <label htmlFor="subject">Asunto *</label>
-                  <input 
-                    id="subject" 
-                    name="subject" 
-                    type="text" 
-                    value={form.subject} 
-                    onChange={handleChange} 
-                    aria-invalid={Boolean(errors.subject)}
-                    placeholder="¿En qué podemos ayudarte?"
-                  />
-                  {errors.subject && <span className="error" role="alert">{errors.subject}</span>}
-                </div>
-                <div className="field">
-                  <label htmlFor="message">Mensaje *</label>
-                  <textarea 
-                    id="message" 
-                    name="message" 
-                    rows="5" 
-                    value={form.message} 
-                    onChange={handleChange} 
-                    aria-invalid={Boolean(errors.message)}
-                    placeholder="Escribe tu mensaje aquí..."
-                  />
-                  {errors.message && <span className="error" role="alert">{errors.message}</span>}
-                </div>
-
-                {/* Mensajes de estado */}
-                {submitStatus === 'success' && (
-                  <div className="alert alert-success" role="alert">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    ¡Mensaje enviado con éxito! Te contactaremos pronto.
-                  </div>
-                )}
-                
-                {submitStatus === 'error' && (
-                  <div className="alert alert-error" role="alert">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <circle cx="12" cy="12" r="10"></circle>
-                      <line x1="12" y1="8" x2="12" y2="12"></line>
-                      <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                    </svg>
-                    Hubo un error al enviar el mensaje. Por favor, intenta de nuevo o contáctanos por WhatsApp.
-                  </div>
-                )}
-
-                <button className="btn-submit" type="submit" disabled={sending}>
-                  {sending ? (
-                    <>
-                      <span className="spinner"></span>
-                      Enviando...
-                    </>
-                  ) : (
-                    'Enviar mensaje'
-                  )}
-                </button>
-              </form>
+              <div className="w-24 h-1 bg-white/80 mt-4 rounded-full"></div>
             </div>
+          </div>
+        </div>
 
-            {/* Información de contacto */}
-            <div className="contact-info">
-              <div className="contact-card">
-                <h3>Información</h3>
-                
-                <div className="contact-item">
-                  <strong>📍 Dirección</strong>
-                  <p>Galería Naranja - Puesto 47-48</p>
-                  <p style={{fontSize: '14px', color: '#666', marginTop: '4px'}}>Calle Misti con Huascarán</p>
-                  <a 
-                    href="https://maps.app.goo.gl/igvX1ku7CCuvsCSu9" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="btn-location"
+        {/* Main Content */}
+        <section className="py-12 md:py-16">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+              {/* Form */}
+              <div className="bg-white rounded-lg shadow-sm p-6 md:p-8">
+                <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+                  Envíanos un mensaje
+                </h2>
+                <p className="text-gray-600 mb-6">
+                  Completa el formulario y nos pondremos en contacto contigo a la brevedad.
+                </p>
+
+                <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                      Nombre completo *
+                    </label>
+                    <input 
+                      id="name" 
+                      name="name" 
+                      type="text" 
+                      value={form.name} 
+                      onChange={handleChange}
+                      placeholder="Tu nombre"
+                      className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-rose transition-colors ${
+                        errors.name ? 'border-red-500' : 'border-gray-300'
+                      }`}
+                    />
+                    {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
+                  </div>
+
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                      Correo electrónico *
+                    </label>
+                    <input 
+                      id="email" 
+                      name="email" 
+                      type="email" 
+                      value={form.email} 
+                      onChange={handleChange}
+                      placeholder="correo@ejemplo.com"
+                      className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-rose transition-colors ${
+                        errors.email ? 'border-red-500' : 'border-gray-300'
+                      }`}
+                    />
+                    {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
+                  </div>
+
+                  <div>
+                    <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
+                      Asunto *
+                    </label>
+                    <input 
+                      id="subject" 
+                      name="subject" 
+                      type="text" 
+                      value={form.subject} 
+                      onChange={handleChange}
+                      placeholder="Asunto de tu mensaje"
+                      className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-rose transition-colors ${
+                        errors.subject ? 'border-red-500' : 'border-gray-300'
+                      }`}
+                    />
+                    {errors.subject && <p className="mt-1 text-sm text-red-600">{errors.subject}</p>}
+                  </div>
+
+                  <div>
+                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+                      Mensaje *
+                    </label>
+                    <textarea 
+                      id="message" 
+                      name="message" 
+                      value={form.message} 
+                      onChange={handleChange}
+                      rows="6"
+                      placeholder="Escribe tu mensaje aquí..."
+                      className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-rose transition-colors ${
+                        errors.message ? 'border-red-500' : 'border-gray-300'
+                      }`}
+                    />
+                    {errors.message && <p className="mt-1 text-sm text-red-600">{errors.message}</p>}
+                  </div>
+
+                  <button 
+                    type="submit" 
+                    disabled={sending}
+                    className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    📍 Ver en Google Maps
-                  </a>
+                    {sending ? 'Enviando...' : 'Enviar mensaje'}
+                  </button>
+
+                  {submitStatus === 'success' && (
+                    <div className="p-4 bg-green-50 border border-green-200 rounded-md">
+                      <p className="text-sm text-green-800">
+                        ✅ Mensaje enviado correctamente. Te responderemos pronto!
+                      </p>
+                    </div>
+                  )}
+
+                  {submitStatus === 'error' && (
+                    <div className="p-4 bg-red-50 border border-red-200 rounded-md">
+                      <p className="text-sm text-red-800">
+                        ❌ Error al enviar. Por favor, intenta de nuevo.
+                      </p>
+                    </div>
+                  )}
+                </form>
+              </div>
+
+              {/* Contact Info */}
+              <div className="space-y-6">
+                <div className="bg-gradient-to-br from-rose to-rose-dark rounded-lg shadow-lg p-8 text-white">
+                  <h3 className="text-2xl font-semibold mb-6">Información de Contacto</h3>
+                  
+                  <div className="space-y-4">
+                    <div className="flex gap-4">
+                      <MapPinIcon className="w-6 h-6 flex-shrink-0" />
+                      <div>
+                        <p className="font-medium">Dirección</p>
+                        <p className="text-white/90 text-sm">
+                          Galería Naranja - Puesto 47-48<br />
+                          Calle Misti con Huascarán
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-4">
+                      <PhoneIcon className="w-6 h-6 flex-shrink-0" />
+                      <div>
+                        <p className="font-medium">WhatsApp</p>
+                        <a href="https://wa.me/51993357672" className="text-white/90 text-sm hover:text-white">
+                          +51 993 357 672
+                        </a>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-4">
+                      <EnvelopeIcon className="w-6 h-6 flex-shrink-0" />
+                      <div>
+                        <p className="font-medium">Email</p>
+                        <a href="mailto:victoriamodas1053@gmail.com" className="text-white/90 text-sm hover:text-white">
+                          victoriamodas1053@gmail.com
+                        </a>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-4">
+                      <ClockIcon className="w-6 h-6 flex-shrink-0" />
+                      <div>
+                        <p className="font-medium">Horario</p>
+                        <p className="text-white/90 text-sm">
+                          Lun-Sáb: 4:00 AM - 3:00 PM<br />
+                          WhatsApp 24/7
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="contact-item">
-                  <strong>📞 Teléfono</strong>
-                  <p>+51 993 357 672</p>
-                </div>
+                {/* Features */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-4">
+                  <div className="bg-white rounded-lg shadow-sm p-6 flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full bg-rose-100 flex items-center justify-center flex-shrink-0">
+                      <BoltIcon className="w-6 h-6 text-rose" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900">Respuesta rápida</h4>
+                      <p className="text-sm text-gray-600">En menos de 24 horas</p>
+                    </div>
+                  </div>
 
-                <div className="contact-item">
-                  <strong>✉️ Email</strong>
-                  <p>victoriamodas1053@gmail.com</p>
-                </div>
+                  <div className="bg-white rounded-lg shadow-sm p-6 flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full bg-rose-100 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-6 h-6 text-rose" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900">Atención personalizada</h4>
+                      <p className="text-sm text-gray-600">Soporte dedicado</p>
+                    </div>
+                  </div>
 
-                <div className="contact-item">
-                  <strong>🕐 Horario</strong>
-                  <p><strong>Atención en Galería:</strong></p>
-                  <p>Lunes a Sábado: 4:00 AM - 3:00 PM</p>
-                  <p style={{marginTop: '8px'}}><strong>WhatsApp:</strong></p>
-                  <p>Disponible 24/7 para pedidos</p>
-                </div>
-
-                <strong style={{display: 'block', marginTop: '24px', marginBottom: '12px', fontSize: '14px', textTransform: 'uppercase', letterSpacing: '0.5px'}}>
-                  Síguenos
-                </strong>
-                <div className="social-links">
-                  <a href="https://www.facebook.com/profile.php?id=61555283742078" className="social-link" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-                    📘
-                  </a>
-                  <a href="https://wa.me/51993357672" className="social-link" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
-                    💬
-                  </a>
+                  <div className="bg-white rounded-lg shadow-sm p-6 flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full bg-rose-100 flex items-center justify-center flex-shrink-0">
+                      <SparklesIcon className="w-6 h-6 text-rose" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900">Soporte premium</h4>
+                      <p className="text-sm text-gray-600">Asesoría de moda</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Sección de ubicación con mapa */}
-      <section className="contact-map-section" aria-labelledby="map-title">
-        <div className="container">
-          <div className="map-header">
-            <h2 id="map-title">Nuestra Ubicación</h2>
-            <p className="contact-subtitle">Visítanos en Galería Naranja, puesto 47-48 - Calle Misti con Huascarán</p>
-          </div>
-          <div className="map-container">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3901.234567890123!2d-77.0282!3d-12.0464!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sGaler%C3%ADa%20Naranja!5e0!3m2!1ses!2spe!4v1234567890123!5m2!1ses!2spe"
-              width="100%"
-              height="400"
-              style={{ border: 0, borderRadius: '12px' }}
-              allowFullScreen=""
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="Ubicación de VictoriaModas en Galería Naranja"
-            ></iframe>
-          </div>
-        </div>
-      </section>
-
-      <Footer />
-    </div>
+        </section>
+    </Layout>
   )
 }

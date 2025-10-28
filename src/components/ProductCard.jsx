@@ -1,85 +1,79 @@
-import { useState } from 'react'
-import './ProductCard.css'
+import { Link } from 'react-router-dom'
+import { ShoppingCartIcon } from '@heroicons/react/24/outline'
 
-export default function ProductCard({ product, onAddToCart, viewMode = 'grid' }) {
-  const [isHovered, setIsHovered] = useState(false)
-
-  const handleAddToCart = () => {
-    onAddToCart(product)
-  }
-
-
-  const getBadgeColor = (badge) => {
-    switch (badge) {
-      case 'OFERTA':
-        return 'badge-sale'
-      case 'NUEVO':
-        return 'badge-new'
-      case 'AGOTADO':
-        return 'badge-sold-out'
-      default:
-        return 'badge-default'
-    }
-  }
-
-  if (viewMode === 'list') {
-    return (
-      <div className="product-card list-view">
-        <div className="product-image-container">
-          <img 
-            src={product.image} 
-            alt={product.name}
-            className="product-image"
-          />
-          {product.badge && (
-            <div className={`product-badge ${getBadgeColor(product.badge)}`}>
-              {product.badge}
-            </div>
-          )}
-        </div>
-        
-        <div className="product-info">
-          <h3 className="product-name">{product.name}</h3>
-          <button 
-            className="add-to-cart-btn"
-            onClick={handleAddToCart}
-          >
-            AGREGAR AL CARRITO
-          </button>
-        </div>
-      </div>
-    )
-  }
-
+export default function ProductCard({ product, showSizes = true }) {
+  const { id, name, image, badge, category } = product
+  
   return (
-    <div 
-      className="product-card"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <div className="product-image-container">
-        <img 
-          src={product.image} 
-          alt={product.name}
-          className="product-image"
+    <article className="group relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-rose-lg transition-all duration-500">
+      {/* Badge */}
+      {badge && (
+        <span className={`absolute top-3 left-3 z-10 px-3 py-1 text-xs font-semibold rounded-full shadow-md ${
+          badge === 'Nuevo' 
+            ? 'bg-green-500 text-white' 
+            : 'bg-rose text-white'
+        }`}>
+          {badge}
+        </span>
+      )}
+
+      {/* Image */}
+      <Link 
+        to={`/producto/${id}`} 
+        className="block aspect-[3/4] overflow-hidden bg-gray-100"
+      >
+        <img
+          src={image}
+          alt={name}
+          className="h-full w-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+          loading="lazy"
         />
-        {product.badge && (
-          <div className={`product-badge ${getBadgeColor(product.badge)}`}>
-            {product.badge}
+      </Link>
+
+      {/* Info */}
+      <div className="p-4">
+        {/* Category */}
+        {category && (
+          <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">
+            {category}
+          </p>
+        )}
+        
+        {/* Name */}
+        <h3 className="text-base font-semibold text-gray-900 mb-2 line-clamp-2 min-h-[3rem]">
+          <Link 
+            to={`/producto/${id}`} 
+            className="hover:text-rose transition-colors"
+          >
+            {name}
+          </Link>
+        </h3>
+
+        {/* Sizes */}
+        {showSizes && (
+          <div className="mb-4">
+            <div className="flex items-center gap-2">
+              {['S', 'M', 'L'].map((size) => (
+                <button
+                  key={size}
+                  className="w-10 h-10 rounded-lg border-2 border-rose/30 hover:border-rose hover:bg-rose hover:text-white transition-all duration-300 hover:scale-110 font-semibold text-sm"
+                >
+                  {size}
+                </button>
+              ))}
+            </div>
           </div>
         )}
-      </div>
-      
-      <div className="product-info">
-        <h3 className="product-name">{product.name}</h3>
-        
-        <button 
-          className="add-to-cart-btn"
-          onClick={handleAddToCart}
+
+        {/* CTA Button */}
+        <Link
+          to={`/producto/${id}`}
+          className="w-full inline-flex items-center justify-center gap-2 bg-gray-900 text-white px-4 py-2.5 rounded-full text-sm font-medium hover:bg-gray-800 hover:shadow-rose transition-all duration-300 group/btn"
         >
-          AGREGAR AL CARRITO
-        </button>
+          <ShoppingCartIcon className="h-5 w-5 group-hover/btn:scale-110 transition-transform" />
+          Ver detalles
+        </Link>
       </div>
-    </div>
+    </article>
   )
 }

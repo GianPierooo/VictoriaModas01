@@ -1,12 +1,9 @@
 import { useState } from 'react'
-import Header from '../components/Header.jsx'
-import Footer from '../components/Footer.jsx'
-import AnnouncementBanner from '../components/AnnouncementBanner.jsx'
-import '../App.css'
-import './FAQPage.css'
+import { Disclosure } from '@headlessui/react'
+import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline'
+import Layout from '../components/Layout.jsx'
 
 export default function FAQPage() {
-  const [openItems, setOpenItems] = useState(new Set())
   const [searchTerm, setSearchTerm] = useState('')
 
   const faqData = [
@@ -25,10 +22,6 @@ export default function FAQPage() {
         {
           question: '¿Puedo cambiar la dirección de envío?',
           answer: 'Sí, puedes cambiar la dirección de envío antes de que el pedido sea procesado. Contacta con nosotros inmediatamente después de realizar tu compra.'
-        },
-        {
-          question: '¿Hacen envíos a provincias?',
-          answer: '¡Sí! Hacemos envíos a todo el Perú. Los tiempos de entrega varían según la ubicación, pero garantizamos la entrega en todas las regiones.'
         }
       ]
     },
@@ -43,10 +36,6 @@ export default function FAQPage() {
         {
           question: '¿Cómo puedo cambiar una talla?',
           answer: 'Si necesitas cambiar de talla, puedes hacerlo contactándonos dentro de los primeros 7 días. Te enviaremos la talla correcta sin costo adicional.'
-        },
-        {
-          question: '¿Cuánto tiempo tarda el reembolso?',
-          answer: 'Una vez aprobada la devolución, el reembolso se procesa en 3-5 días hábiles y se refleja en tu cuenta bancaria en 1-2 días adicionales.'
         }
       ]
     },
@@ -59,16 +48,8 @@ export default function FAQPage() {
           answer: 'Tenemos una guía de tallas detallada en cada producto. Si tienes dudas, puedes contactarnos y te ayudaremos a elegir la talla perfecta.'
         },
         {
-          question: '¿Los colores son exactos a las fotos?',
-          answer: 'Hacemos nuestro mejor esfuerzo para que los colores sean fieles a las fotos. Sin embargo, pueden haber pequeñas variaciones debido a la iluminación y pantallas.'
-        },
-        {
           question: '¿Qué materiales usan?',
           answer: 'Utilizamos materiales premium como scuba, suplex, seda francesa, peluche, paño carnero y angora. Cada producto especifica el material utilizado.'
-        },
-        {
-          question: '¿Los productos son de talla única?',
-          answer: 'Sí, ofrecemos una amplia gama de tallas desde XS hasta L. Cada producto tiene su propia tabla de tallas disponible.'
         }
       ]
     },
@@ -83,169 +64,132 @@ export default function FAQPage() {
         {
           question: '¿Es seguro pagar en línea?',
           answer: 'Sí, utilizamos sistemas de pago seguros y encriptados. Tus datos están protegidos y no almacenamos información de tarjetas.'
-        },
-        {
-          question: '¿Puedo pagar contra entrega?',
-          answer: 'Sí, ofrecemos pago contra entrega para pedidos dentro de Lima. El costo adicional es de S/5 por este servicio.'
-        },
-        {
-          question: '¿Emiten factura?',
-          answer: 'Sí, emitimos facturas electrónicas. Puedes solicitarla al momento de la compra proporcionando tu RUC.'
-        }
-      ]
-    },
-    {
-      category: 'Atención al Cliente',
-      icon: '🎧',
-      questions: [
-        {
-          question: '¿Cuáles son sus horarios de atención?',
-          answer: 'Atención en Galería Naranja (Puesto 47-48): Lunes a Sábado de 4:00 AM a 3:00 PM. Por WhatsApp estamos disponibles 24 horas, 7 días a la semana para pedidos.'
-        },
-        {
-          question: '¿Cómo puedo contactarlos?',
-          answer: 'Puedes contactarnos por WhatsApp (+51 993 357 672) disponible 24/7, email (victoriamodas1053@gmail.com) o visitarnos en galería de Lunes a Sábado de 4:00 AM a 3:00 PM.'
-        },
-        {
-          question: '¿Ofrecen asesoría de estilo?',
-          answer: '¡Sí! Nuestro equipo de asesoras está capacitado para ayudarte a elegir las prendas perfectas según tu estilo y ocasión.'
         }
       ]
     }
   ]
 
-  const toggleItem = (categoryIndex, questionIndex) => {
-    const key = `${categoryIndex}-${questionIndex}`
-    const newOpenItems = new Set(openItems)
-    if (newOpenItems.has(key)) {
-      newOpenItems.delete(key)
-    } else {
-      newOpenItems.add(key)
-    }
-    setOpenItems(newOpenItems)
-  }
-
-  const filteredData = faqData.map(category => ({
+  // Filtrar preguntas por búsqueda
+  const filteredFaqData = faqData.map(category => ({
     ...category,
-    questions: category.questions.filter(q => 
+    questions: category.questions.filter(q =>
       q.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
       q.answer.toLowerCase().includes(searchTerm.toLowerCase())
     )
   })).filter(category => category.questions.length > 0)
 
   return (
-    <div className="faq-page">
-      <AnnouncementBanner />
-      <Header />
-      
-      {/* Hero Header */}
-      <div className="faq-header">
-        <div className="container">
-          <div className="faq-header-content">
-            <h1 className="faq-main-title">Preguntas Frecuentes</h1>
-            <p className="faq-subtitle">
-              Encuentra respuestas rápidas a las dudas más comunes sobre nuestros productos y servicios
-            </p>
-            
-            {/* Barra de búsqueda */}
-            <div className="faq-search">
-              <div className="search-input-wrapper">
-                <span className="search-icon">🔍</span>
+    <Layout>
+        {/* Hero */}
+        <div className="relative h-56 md:h-72 bg-gradient-to-r from-rose via-rose-100 to-rose-50 overflow-hidden">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-white/20 rounded-full blur-3xl animate-pulse-soft"></div>
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-rose-dark/20 rounded-full blur-3xl animate-float"></div>
+          
+          <div className="relative h-full flex items-center">
+            <div className="container mx-auto px-6">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-bold mb-4 animate-fade-in">
+                <span className="text-white drop-shadow-lg">Preguntas</span>
+                <span className="text-gray-900"> Frecuentes</span>
+              </h1>
+              <p className="text-lg md:text-xl text-gray-800 font-medium">
+                Encuentra respuestas a las preguntas más comunes
+              </p>
+              <div className="w-24 h-1 bg-white/80 mt-4 rounded-full"></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Content */}
+        <section className="py-12 md:py-16">
+          <div className="container mx-auto px-4 max-w-4xl">
+            {/* Search */}
+            <div className="mb-12">
+              <div className="relative">
+                <MagnifyingGlassIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   type="text"
                   placeholder="Buscar preguntas..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="search-input"
+                  className="w-full pl-12 pr-4 py-4 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-rose focus:border-transparent"
                 />
               </div>
             </div>
 
-            {/* Estadísticas rápidas */}
-            <div className="faq-stats">
-              <div className="stat-item">
-                <span className="stat-number">{faqData.reduce((acc, cat) => acc + cat.questions.length, 0)}+</span>
-                <span className="stat-label">Preguntas respondidas</span>
-              </div>
-              <div className="stat-item">
-                <span className="stat-number">{faqData.length}</span>
-                <span className="stat-label">Categorías</span>
-              </div>
-              <div className="stat-item">
-                <span className="stat-number">24/7</span>
-                <span className="stat-label">Soporte disponible</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Contenido principal */}
-      <section className="faq-section">
-        <div className="container">
-          {searchTerm && (
-            <div className="search-results-header">
-              <h2>Resultados para "{searchTerm}"</h2>
-              <p>{filteredData.reduce((acc, cat) => acc + cat.questions.length, 0)} pregunta(s) encontrada(s)</p>
-            </div>
-          )}
-
-          <div className="faq-content">
-            {filteredData.map((category, categoryIndex) => (
-              <div key={categoryIndex} className="faq-category">
-                <div className="category-header">
-                  <div className="category-icon">{category.icon}</div>
-                  <h2 className="category-title">{category.category}</h2>
+            {/* FAQ Accordion */}
+            <div className="space-y-8">
+              {filteredFaqData.map((category, catIdx) => (
+                <div key={catIdx} className="bg-white rounded-lg shadow-sm p-6">
+                  <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center gap-3">
+                    <span className="text-3xl">{category.icon}</span>
+                    {category.category}
+                  </h2>
+                  
+                  <div className="space-y-2">
+                    {category.questions.map((item, qIdx) => (
+                      <Disclosure key={qIdx}>
+                        {({ open }) => (
+                          <>
+                            <Disclosure.Button className="flex w-full justify-between items-center rounded-lg bg-gray-50 px-4 py-4 text-left text-base font-medium text-gray-900 hover:bg-gray-100 transition-colors">
+                              <span>{item.question}</span>
+                              <ChevronDownIcon
+                                className={`${
+                                  open ? 'rotate-180 transform' : ''
+                                } h-5 w-5 text-gray-500 transition-transform`}
+                              />
+                            </Disclosure.Button>
+                            <Disclosure.Panel className="px-4 pt-4 pb-2 text-gray-600">
+                              {item.answer}
+                            </Disclosure.Panel>
+                          </>
+                        )}
+                      </Disclosure>
+                    ))}
+                  </div>
                 </div>
-                
-                <div className="questions-list">
-                  {category.questions.map((item, questionIndex) => {
-                    const isOpen = openItems.has(`${categoryIndex}-${questionIndex}`)
-                    return (
-                      <div key={questionIndex} className="question-item">
-                        <button
-                          className={`question-button ${isOpen ? 'open' : ''}`}
-                          onClick={() => toggleItem(categoryIndex, questionIndex)}
-                          aria-expanded={isOpen}
-                        >
-                          <span className="question-text">{item.question}</span>
-                          <span className="question-icon">
-                            {isOpen ? '−' : '+'}
-                          </span>
-                        </button>
-                        
-                        <div className={`answer-content ${isOpen ? 'open' : ''}`}>
-                          <div className="answer-text">
-                            {item.answer}
-                          </div>
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
 
-          {/* Sección de contacto adicional */}
-          <div className="faq-contact">
-            <div className="contact-card">
-              <h3>¿No encontraste lo que buscabas?</h3>
-              <p>Nuestro equipo de atención al cliente está aquí para ayudarte con cualquier duda específica.</p>
-              <div className="contact-actions">
-                <a href="/contacto" className="contact-btn primary">
-                  Contactar Soporte
+            {/* No Results */}
+            {filteredFaqData.length === 0 && (
+              <div className="text-center py-12">
+                <MagnifyingGlassIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  No se encontraron resultados
+                </h3>
+                <p className="text-gray-600">
+                  Intenta con otros términos de búsqueda
+                </p>
+              </div>
+            )}
+
+            {/* Contact CTA */}
+            <div className="mt-12 text-center bg-rose-50 rounded-lg p-8">
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                ¿No encontraste lo que buscabas?
+              </h3>
+              <p className="text-gray-600 mb-6">
+                Contáctanos y estaremos encantados de ayudarte
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <a 
+                  href="https://wa.me/51993357672"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary"
+                >
+                  📱 WhatsApp
                 </a>
-                <a href="https://wa.me/51993357672" className="contact-btn secondary" target="_blank" rel="noopener noreferrer">
-                  WhatsApp
+                <a 
+                  href="/contacto"
+                  className="btn-outline"
+                >
+                  ✉️ Formulario de contacto
                 </a>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      <Footer />
-    </div>
+        </section>
+    </Layout>
   )
 }
